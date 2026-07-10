@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useSyncExternalStore } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import useEmblaCarousel from "embla-carousel-react";
@@ -13,20 +13,30 @@ interface WhatsNewCarouselProps {
 
 export function WhatsNewCarousel({ items }: WhatsNewCarouselProps): React.ReactElement {
   const [emblaRef, emblaApi] = useEmblaCarousel({ align: "start", loop: false });
-  const [selected, setSelected] = useState(0);
-  const [snaps, setSnaps] = useState<number[]>([]);
 
-  const onSelect = useCallback(() => {
-    if (emblaApi) setSelected(emblaApi.selectedScrollSnap());
-  }, [emblaApi]);
+  const subscribe = useCallback(
+    (onStoreChange: () => void) => {
+      if (!emblaApi) return () => {};
+      emblaApi.on("select", onStoreChange);
+      emblaApi.on("reInit", onStoreChange);
+      return () => {
+        emblaApi.off("select", onStoreChange);
+        emblaApi.off("reInit", onStoreChange);
+      };
+    },
+    [emblaApi],
+  );
 
-  useEffect(() => {
-    if (!emblaApi) return;
-    setSnaps(emblaApi.scrollSnapList());
-    emblaApi.on("select", onSelect);
-    emblaApi.on("reInit", () => setSnaps(emblaApi.scrollSnapList()));
-    onSelect();
-  }, [emblaApi, onSelect]);
+  const selected = useSyncExternalStore(
+    subscribe,
+    () => (emblaApi ? emblaApi.selectedScrollSnap() : 0),
+    () => 0,
+  );
+  const snapCount = useSyncExternalStore(
+    subscribe,
+    () => (emblaApi ? emblaApi.scrollSnapList().length : 0),
+    () => 0,
+  );
 
   return (
     <div className="module-wrapper relative py-5">
@@ -77,7 +87,7 @@ export function WhatsNewCarousel({ items }: WhatsNewCarouselProps): React.ReactE
         </div>
 
         <div className="mt-10 flex items-center justify-center gap-2.5">
-          {snaps.map((_, i) => (
+          {Array.from({ length: snapCount }, (_, i) => (
             <button
               key={i}
               type="button"
