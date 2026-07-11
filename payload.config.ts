@@ -32,6 +32,20 @@ const S3_ACCESS_KEY_ID = process.env.S3_ACCESS_KEY_ID;
 const S3_SECRET_ACCESS_KEY = process.env.S3_SECRET_ACCESS_KEY;
 const s3Enabled = Boolean(S3_BUCKET && S3_ACCESS_KEY_ID && S3_SECRET_ACCESS_KEY);
 
+// Drizzle `push` (schema auto-sync) is a local-development convenience only.
+// Vercel builds run with NODE_ENV=production, so staging + production are driven
+// by the committed migrations in ./migrations instead.
+const dbPush = process.env.NODE_ENV !== "production";
+
+// SSL: Neon validates against the public trust store via the connection string's
+// sslmode. Amazon RDS presents a CA that isn't in Node's default store — supply it
+// as DATABASE_CA (PEM), or set DATABASE_SSL_NO_VERIFY=true to skip verification.
+const dbSsl = process.env.DATABASE_CA
+  ? { ca: process.env.DATABASE_CA }
+  : process.env.DATABASE_SSL_NO_VERIFY === "true"
+    ? { rejectUnauthorized: false }
+    : undefined;
+
 export default buildConfig({
   admin: {
     user: Users.slug,
@@ -47,8 +61,13 @@ export default buildConfig({
     outputFile: path.resolve(dirname, "payload-types.ts"),
   },
   db: postgresAdapter({
-    pool: { connectionString: process.env.DATABASE_URI || "" },
-    push: true,
+    pool: {
+      connectionString: process.env.DATABASE_URI || "",
+      max: Number(process.env.DATABASE_POOL_MAX) || 5,
+      ...(dbSsl ? { ssl: dbSsl } : {}),
+    },
+    push: dbPush,
+    migrationDir: path.resolve(dirname, "migrations"),
   }),
   plugins: s3Enabled
     ? [
