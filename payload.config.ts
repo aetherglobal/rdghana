@@ -1,4 +1,3 @@
-import { existsSync, readFileSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -39,16 +38,10 @@ const s3Enabled = Boolean(S3_BUCKET && S3_ACCESS_KEY_ID && S3_SECRET_ACCESS_KEY)
 const dbPush = process.env.NODE_ENV !== "production";
 
 // SSL: Neon validates against the public trust store via the connection string's
-// sslmode. Amazon RDS presents a CA that isn't in Node's default store — point
-// DATABASE_CA at a PEM file (path resolved from the repo root, works on Vercel when
-// committed) or inline PEM text, or set DATABASE_SSL_NO_VERIFY=true to skip checks.
-const dbCaEnv = process.env.DATABASE_CA;
-const dbCaPath = dbCaEnv
-  ? path.isAbsolute(dbCaEnv)
-    ? dbCaEnv
-    : path.resolve(dirname, dbCaEnv)
-  : undefined;
-const dbCa = dbCaPath && existsSync(dbCaPath) ? readFileSync(dbCaPath, "utf8") : dbCaEnv;
+// sslmode. Amazon RDS presents a CA that isn't in Node's default store — supply that
+// CA as inline PEM text in DATABASE_CA (a file path won't work: serverless file
+// tracing can't follow it), or set DATABASE_SSL_NO_VERIFY=true to skip verification.
+const dbCa = process.env.DATABASE_CA || undefined;
 const dbSsl = dbCa
   ? { ca: dbCa }
   : process.env.DATABASE_SSL_NO_VERIFY === "true"
