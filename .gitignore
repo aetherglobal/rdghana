@@ -23,6 +23,8 @@
 # misc
 .DS_Store
 *.pem
+# public RDS CA bundle (not a secret) — needed at build/runtime for DATABASE_CA
+!postgres-ca.pem
 
 # debug
 npm-debug.log*
