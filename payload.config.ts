@@ -15,11 +15,13 @@ import { Media } from "./collections/Media";
 import { Articles } from "./collections/Articles";
 import { Pages } from "./collections/Pages";
 import { NewsletterSubscribers } from "./collections/NewsletterSubscribers";
+import { JobOpenings } from "./collections/JobOpenings";
 import { SiteSettings } from "./globals/SiteSettings";
 import { Company } from "./globals/Company";
 import { Faq } from "./globals/Faq";
 import { Terms } from "./globals/Terms";
 import { VulnerabilityDisclosure } from "./globals/VulnerabilityDisclosure";
+import { Careers } from "./globals/Careers";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -53,8 +55,8 @@ export default buildConfig({
     user: Users.slug,
     importMap: { baseDir: path.resolve(dirname) },
   },
-  collections: [Users, Media, Articles, Pages, NewsletterSubscribers],
-  globals: [SiteSettings, Company, Faq, Terms, VulnerabilityDisclosure],
+  collections: [Users, Media, Articles, Pages, NewsletterSubscribers, JobOpenings],
+  globals: [SiteSettings, Company, Faq, Terms, VulnerabilityDisclosure, Careers],
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [...defaultFeatures, EXPERIMENTAL_TableFeature()],
   }),
