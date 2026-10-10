@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 
 interface SiteHeaderProps {
   navDropdowns: NavDropdownConfig[];
+  navLinks: NavLink[];
   contact: NavLink;
   social: SocialLinkItem[];
   oristapayUrl: string;
@@ -55,6 +56,7 @@ const GetStartedButton = ({ href }: { href: string }): React.ReactElement => (
 
 export function SiteHeader({
   navDropdowns,
+  navLinks,
   contact,
   social,
   oristapayUrl,
@@ -124,12 +126,15 @@ export function SiteHeader({
             {navDropdowns.map((item) => (
               <NavDropdown key={item.label} item={item} />
             ))}
-            <Link
-              href={contact.href}
-              className="py-2 text-h6 text-ink transition-colors hover:text-primary"
-            >
-              {contact.label}
-            </Link>
+            {[...navLinks, contact].map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="py-2 text-h6 text-ink transition-colors hover:text-primary"
+              >
+                {link.label}
+              </Link>
+            ))}
           </nav>
         </div>
 
@@ -168,6 +173,7 @@ export function SiteHeader({
         open={menuOpen}
         onClose={() => setMenuOpen(false)}
         navDropdowns={navDropdowns}
+        navLinks={navLinks}
         contact={contact}
         social={social}
       />

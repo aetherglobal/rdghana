@@ -38,6 +38,16 @@ export const SiteSettings: GlobalConfig = {
         },
       ],
     },
+    {
+      name: "navLinks",
+      type: "array",
+      labels: { singular: "Nav link", plural: "Nav links" },
+      admin: { description: "Top-level header links shown after the dropdowns, before Contact." },
+      fields: [
+        { name: "label", type: "text", required: true },
+        { name: "href", type: "text", required: true },
+      ],
+    },
     { name: "contactLabel", type: "text" },
     { name: "contactHref", type: "text" },
     {

@@ -12,6 +12,7 @@ interface MobileMenuProps {
 	open: boolean;
 	onClose: () => void;
 	navDropdowns: NavDropdown[];
+	navLinks: NavLink[];
 	contact: NavLink;
 	social: SocialLinkItem[];
 }
@@ -20,6 +21,7 @@ export function MobileMenu({
 	open,
 	onClose,
 	navDropdowns,
+	navLinks,
 	contact,
 	social,
 }: MobileMenuProps): React.ReactElement {
@@ -85,13 +87,16 @@ export function MobileMenu({
 						);
 					})}
 
-					<Link
-						href={contact.href}
-						onClick={onClose}
-						className='py-5 text-lg font-bold text-ink'
-					>
-						{contact.label}
-					</Link>
+					{[...navLinks, contact].map((link) => (
+						<Link
+							key={link.href}
+							href={link.href}
+							onClick={onClose}
+							className='py-5 text-lg font-bold text-ink'
+						>
+							{link.label}
+						</Link>
+					))}
 				</nav>
 
 				<div className='mt-auto flex items-center justify-between pt-10'>

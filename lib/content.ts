@@ -63,6 +63,7 @@ export interface SiteChrome {
   privacyPolicyUrl: string;
   pdpoNoticeUrl: string;
   navDropdowns: NavDropdown[];
+  navLinks: NavLink[];
   contact: NavLink;
   footerColumns: FooterColumn[];
   socialLinks: SocialLinkItem[];
@@ -85,6 +86,7 @@ export async function getSiteSettings(): Promise<SiteChrome> {
         description: l.description ?? undefined,
       })),
     })),
+    navLinks: (s.navLinks ?? []).map((l) => ({ label: l.label, href: l.href })),
     contact: { label: s.contactLabel ?? "Contact us", href: s.contactHref ?? "/contact-us/" },
     footerColumns: (s.footerColumns ?? []).map((c) => ({
       heading: c.heading,
