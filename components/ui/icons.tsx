@@ -88,3 +88,84 @@ export function GlobeIcon(props: SVGProps<SVGSVGElement>): React.ReactElement {
     </svg>
   );
 }
+
+function StrokeIcon({ d, ...props }: SVGProps<SVGSVGElement> & { d: string }): React.ReactElement {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" width="1em" height="1em" aria-hidden {...props}>
+      <path
+        d={d}
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function SparkIcon(props: SVGProps<SVGSVGElement>): React.ReactElement {
+  return (
+    <StrokeIcon
+      d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1M12 8.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7Z"
+      {...props}
+    />
+  );
+}
+
+export function PeopleIcon(props: SVGProps<SVGSVGElement>): React.ReactElement {
+  return (
+    <StrokeIcon
+      d="M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM2.5 20c.6-3.3 3.2-5.5 6.5-5.5s5.9 2.2 6.5 5.5M16 4.3a3.5 3.5 0 0 1 0 6.4M18 14.8c1.9.8 3.1 2.6 3.5 5.2"
+      {...props}
+    />
+  );
+}
+
+export function TargetIcon(props: SVGProps<SVGSVGElement>): React.ReactElement {
+  return (
+    <StrokeIcon
+      d="M12 21a9 9 0 1 1 0-18 9 9 0 0 1 0 18ZM12 16.5a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9ZM12 12l7-7M16 5h3v3"
+      {...props}
+    />
+  );
+}
+
+export function MailIcon(props: SVGProps<SVGSVGElement>): React.ReactElement {
+  return (
+    <StrokeIcon
+      d="M4 5.5h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1ZM3.5 6.5l8.5 6.5 8.5-6.5"
+      {...props}
+    />
+  );
+}
+
+export function DocumentIcon(props: SVGProps<SVGSVGElement>): React.ReactElement {
+  return (
+    <StrokeIcon
+      d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5L14 3ZM14 3v4.5h4.5M9 12.5h6M9 16h6"
+      {...props}
+    />
+  );
+}
+
+export function DownloadIcon(props: SVGProps<SVGSVGElement>): React.ReactElement {
+  return <StrokeIcon d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19.5h14" {...props} />;
+}
+
+export function CalendarIcon(props: SVGProps<SVGSVGElement>): React.ReactElement {
+  return (
+    <StrokeIcon
+      d="M5 5.5h14a1 1 0 0 1 1 1V19a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6.5a1 1 0 0 1 1-1ZM4 10h16M8 3.5v4M16 3.5v4"
+      {...props}
+    />
+  );
+}
+
+export function BriefcaseIcon(props: SVGProps<SVGSVGElement>): React.ReactElement {
+  return (
+    <StrokeIcon
+      d="M4 7.5h16a1 1 0 0 1 1 1V19a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8.5a1 1 0 0 1 1-1ZM9 7.5V5.5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M3 12.5h18"
+      {...props}
+    />
+  );
+}
