@@ -5,6 +5,16 @@ export const SiteSettings: GlobalConfig = {
   label: "Site Settings",
   access: { read: () => true },
   admin: { group: "Site" },
+  hooks: {
+    afterChange: [
+      async () => {
+        try {
+          const { revalidatePath } = await import("next/cache");
+          revalidatePath("/", "layout");
+        } catch {}
+      },
+    ],
+  },
   fields: [
     { name: "oristapayUrl", type: "text" },
     { name: "privacyPolicyUrl", type: "text" },
