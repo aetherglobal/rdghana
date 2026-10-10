@@ -49,6 +49,7 @@ export default async function RootLayout({
       <body className="flex min-h-full flex-col bg-white text-ink">
         <SiteHeader
           navDropdowns={chrome.navDropdowns}
+          navLinks={chrome.navLinks}
           contact={chrome.contact}
           social={chrome.socialLinks}
           oristapayUrl={chrome.oristapayUrl}
